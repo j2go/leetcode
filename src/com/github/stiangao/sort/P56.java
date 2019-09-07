@@ -14,20 +14,23 @@ public class P56 {
      * @return
      */
     public int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+        Arrays.parallelSort(intervals, Comparator.comparingInt(a -> a[0]));
         int[][] arr = new int[intervals.length][2];
         int arrIndex = 0;
         for (int i = 0; i < intervals.length; i++) {
-            int start = intervals[i][0];
+            arr[arrIndex][0] = intervals[i][0];
             int end = intervals[i][1];
             while(i+1 < intervals.length && end >= intervals[i+1][0]) {
                 i++;
                 end = end < intervals[i][1] ? intervals[i][1] : end;
             }
-            arr[arrIndex][0] = start;
             arr[arrIndex][1] = end;
             arrIndex++;
         }
-        return Arrays.copyOf(arr, arrIndex);
+        int[][] result = new int[arrIndex][2];
+        for (int i = 0; i < arrIndex; i++) {
+            result[0]=arr[0];
+        }
+        return result;
     }
 }
