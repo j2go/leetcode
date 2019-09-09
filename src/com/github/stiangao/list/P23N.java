@@ -1,5 +1,11 @@
 package com.github.stiangao.list;
 
+import java.util.Comparator;
+import java.util.Objects;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.stream.Stream;
+
 /**
  * 合并K个排序链表
  * https://leetcode-cn.com/problems/merge-k-sorted-lists/submissions/
@@ -16,10 +22,16 @@ public class P23N {
     }
 
     public ListNode mergeKLists(ListNode[] lists) {
-        if (lists == null || lists.length < 1) return null;
+        Queue<ListNode> queue = new PriorityQueue<>(Comparator.comparingInt(e -> e.val));
         ListNode head = new ListNode(0);
-        for (int i = 0; i < lists.length; i++) {
-            head.next = merge(head.next, lists[i]);
+        ListNode ptr = head;
+        Stream.of(lists).filter(Objects::nonNull).forEach(queue::add);
+        while (!queue.isEmpty()) {
+            ListNode node = queue.poll();
+            ptr.next = node;
+            ptr = ptr.next;
+            node = node.next;
+            if (node != null) queue.add(node);
         }
         return head.next;
     }
