@@ -40,7 +40,7 @@ class LFUCache {
             CacheNode p = next;
             StringBuilder builder = prev == null ? new StringBuilder("^ - ") : new StringBuilder();
             while (p.next != null) {
-                builder.append(p.value).append(" - ");
+                builder.append("{").append(p.key).append(":").append(p.value).append(",").append(p.count).append("} - ");
                 p = p.next;
             }
             builder.append(p.toString());
@@ -78,7 +78,13 @@ class LFUCache {
 
         if(node != null) {
             node.value = value;
-            node.moveAfter(head);
+            node.count += 1;
+            CacheNode p = node.prev;
+            node.remove();
+            while (p != head && p.count <= node.count) {
+                p = p.prev;
+            }
+            p.insert(node);
             return;
         }
         CacheNode newNode = new CacheNode();
