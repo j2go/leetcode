@@ -1,4 +1,4 @@
-package com.github.stiangao;
+package com.github.stiangao.string;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

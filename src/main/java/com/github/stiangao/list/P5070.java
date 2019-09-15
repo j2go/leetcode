@@ -1,6 +1,5 @@
-package com.github.stiangao;
+package com.github.stiangao.list;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class P5070 {

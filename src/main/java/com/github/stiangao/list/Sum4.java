@@ -1,4 +1,4 @@
-package com.github.stiangao;
+package com.github.stiangao.list;
 
 import java.util.ArrayList;
 import java.util.Arrays;
