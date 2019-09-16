@@ -9,6 +9,11 @@ import java.util.Queue;
  */
 public class P838 {
 
+    /**
+     * 29ms
+     * @param dominoes
+     * @return
+     */
     public String pushDominoes(String dominoes) {
         char[] chars = dominoes.toCharArray();
         Queue<Integer> lq = new ArrayDeque<>();
@@ -57,6 +62,55 @@ public class P838 {
                 }
             }
         } while (!lq.isEmpty() || !rq.isEmpty());
+        return new String(chars);
+    }
+
+    /**
+     * 高效解法 12ms 92%
+     *
+     * @param dominoes
+     * @return
+     */
+    public String pushDominoes2(String dominoes) {
+        char[] chars = dominoes.toCharArray();
+        int n = chars.length;
+        int[] flag = new int[n];
+        for (int i = 0; i < n; i++) {
+            switch (chars[i]) {
+                case 'L':
+                    flag[i] = -1;
+                    for (int j = i - 1; j >= 0 && (flag[j] == 0 || flag[j] > 1); j--) {
+                        if (flag[j] == (0 - flag[j + 1])) {
+                            break;
+                        }
+                        if (flag[j] == (1 - flag[j + 1])) {
+                            flag[j] = 0;
+                            break;
+                        }
+                        flag[j] = flag[j + 1] - 1;
+                    }
+                    break;
+                case '.':
+                    flag[i] = 0;
+                    break;
+                case 'R':
+                    flag[i] = 1;
+                    while (i + 1 < n && chars[i + 1] == '.') {
+                        flag[i + 1] = flag[i] + 1;
+                        i++;
+                    }
+                    break;
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            if (flag[i] < 0) {
+                chars[i] = 'L';
+            } else if (flag[i] == 0) {
+                chars[i] = '.';
+            } else {
+                chars[i] = 'R';
+            }
+        }
         return new String(chars);
     }
 
