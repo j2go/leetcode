@@ -41,7 +41,6 @@ public class P23N {
             return p;
         }
         q.next = merge(p, q.next);
-
         return q;
     }
 
