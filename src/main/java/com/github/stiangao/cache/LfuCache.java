@@ -3,7 +3,70 @@ package com.github.stiangao.cache;
 import java.util.HashMap;
 import java.util.Map;
 
-class LFUCache {
+
+/**
+ * @author shitiangao
+ */
+public class LfuCache {
+
+    private Map<Integer, CacheNode> map = new HashMap<>();
+    private int size;
+    private int capacity;
+    private CacheNode head, tail;
+
+    public LfuCache(int capacity) {
+        this.size = 0;
+        this.capacity = capacity;
+
+        head = new CacheNode();
+        tail = new CacheNode();
+
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    public int get(int key) {
+        CacheNode node = map.get(key);
+        if (node == null) return -1;
+
+        node.moveAfter(head);
+
+        return node.value;
+    }
+
+    public void put(int key, int value) {
+        CacheNode node = map.get(key);
+
+        if (node != null) {
+            node.value = value;
+            node.count += 1;
+            CacheNode p = node.prev;
+            node.remove();
+            while (p != head && p.count <= node.count) {
+                p = p.prev;
+            }
+            p.insert(node);
+            return;
+        }
+        CacheNode newNode = new CacheNode();
+        newNode.key = key;
+        newNode.value = value;
+
+        if (size == capacity) {
+            map.remove(tail.prev.key);
+            tail.prev.remove();
+            --size;
+        }
+        map.put(key, newNode);
+        CacheNode p = tail.prev;
+        while (p != head && p.count == 0) {
+            p = p.prev;
+        }
+        p.insert(newNode);
+
+        ++size;
+    }
+
 
     class CacheNode {
         int key;
@@ -13,7 +76,7 @@ class LFUCache {
         CacheNode prev;
         CacheNode next;
 
-        void remove(){
+        void remove() {
             prev.next = next;
             next.prev = prev;
         }
@@ -47,64 +110,5 @@ class LFUCache {
             return builder.toString();
         }
     }
-
-    private Map<Integer, CacheNode> map = new HashMap<>();
-    private int size;
-    private int capacity;
-    private CacheNode head, tail;
-
-    public LFUCache(int capacity) {
-        this.size = 0;
-        this.capacity = capacity;
-
-        head = new CacheNode();
-        tail = new CacheNode();
-
-        head.next = tail;
-        tail.prev = head;
-    }
-
-    public int get(int key) {
-        CacheNode node = map.get(key);
-        if (node == null) return -1;
-
-        node.moveAfter(head);
-
-        return node.value;
-    }
-
-    public void put(int key, int value) {
-        CacheNode node = map.get(key);
-
-        if(node != null) {
-            node.value = value;
-            node.count += 1;
-            CacheNode p = node.prev;
-            node.remove();
-            while (p != head && p.count <= node.count) {
-                p = p.prev;
-            }
-            p.insert(node);
-            return;
-        }
-        CacheNode newNode = new CacheNode();
-        newNode.key = key;
-        newNode.value = value;
-
-        if(size == capacity) {
-            map.remove(tail.prev.key);
-            tail.prev.remove();
-            --size;
-        }
-        map.put(key, newNode);
-        CacheNode p = tail.prev;
-        while (p != head && p.count == 0) {
-            p = p.prev;
-        }
-        p.insert(newNode);
-
-        ++size;
-    }
-
 }
 

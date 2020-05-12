@@ -1,11 +1,13 @@
 package com.github.stiangao.cache;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author shitiangao
+ */
 public class LRUCache {
 
     private int cap;
@@ -51,7 +53,7 @@ public class LRUCache {
         }
     }
 
-    class CacheItem implements Comparable<CacheItem> {
+    static class CacheItem implements Comparable<CacheItem> {
         final int k;
         private int v;
         private int time;

@@ -6,8 +6,10 @@ import java.util.PriorityQueue;
 
 /**
  * 优先队列实现 LFU
+ *
+ * @author shitiangao
  */
-public class LFUCache2 {
+public class LfuCache2 {
     class CacheNode implements Comparable<CacheNode> {
         int key;
         int value;
@@ -54,7 +56,7 @@ public class LFUCache2 {
     final int cap;
     static int CLK = 0;
 
-    public LFUCache2(int capacity) {
+    public LfuCache2(int capacity) {
         cap = capacity;
         if (cap > 0) {
             map = new HashMap<>();
