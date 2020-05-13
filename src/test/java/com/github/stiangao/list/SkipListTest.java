@@ -6,7 +6,6 @@ import static org.junit.Assert.*;
 
 public class SkipListTest {
 
-    SkipList skipList = new SkipList();
 
     @Test
     public void search() {
