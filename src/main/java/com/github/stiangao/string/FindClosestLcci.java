@@ -9,11 +9,19 @@ public class FindClosestLcci {
 
     public int findClosest(String[] words, String word1, String word2) {
         int len = words.length;
-        int l = -1, r =  -1, ans = len;
+        int l = -1, r = -1, ans = len;
         for (int i = 0; i < len; i++) {
-            if (word1.equals(words[i])) l = i;
-            if (word2.equals(words[i])) r = i;
-            if (l > 0 && r > 0) ans = Math.min(ans, Math.abs(l-r));
+            if (word1.equals(words[i])) {
+                l = i;
+                if (r > 0) {
+                    ans = Math.min(ans, Math.abs(l - r));
+                }
+            } else if (word2.equals(words[i])) {
+                r = i;
+                if (l > 0) {
+                    ans = Math.min(ans, Math.abs(l - r));
+                }
+            }
         }
         return ans;
     }
