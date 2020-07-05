@@ -26,65 +26,57 @@ public class P378 {
     }
 
     HeapNode[] smallHeap;
-    int hi;
+    int size;
 
     public int kthSmallest(int[][] matrix, int k) {
         int n = matrix.length;
         smallHeap = new HeapNode[n];
-        hi = 0;
+        size = 0;
         for (int[] arr : matrix) {
             insertHeap(new HeapNode(arr, 0));
         }
-        while ((--k) != 0) {
-            HeapNode node = poll();
-            if (node.plusAndHasNext()) {
-                insertHeap(node);
-            }
+        while ((--k) > 0) {
+            poll();
         }
         return smallHeap[0].val();
     }
 
     void insertHeap(HeapNode node) {
-        if (hi == 0) {
-            smallHeap[hi++] = node;
+        if (size == 0) {
+            smallHeap[size++] = node;
             return;
         }
-        int i = hi;
-        while (true) {
-            int p = i >> 1;
-            if (!(p > 0 && smallHeap[p].val() > node.val())) break;
+        int i = size;
+        while (i > 0) {
+            int p = (i - 1) >> 1;
+            if (smallHeap[p].val() < node.val()) break;
             smallHeap[i] = smallHeap[p];
-            i >>= 1;
+            i = p;
         }
         smallHeap[i] = node;
-        hi++;
+        size++;
     }
 
-    HeapNode poll() {
-        HeapNode head = smallHeap[0];
-        for (int i = 0; i << 1 + 1 < hi; ) {
-            if (i << 1 + 2 == hi) {
-                smallHeap[i] = smallHeap[i * 2 + 1];
-                break;
-            }
-            if (smallHeap[i * 2 + 1].val() < smallHeap[i * 2 + 2].val()) {
-                smallHeap[i] = smallHeap[i * 2 + 1];
-                if (((i >> 1) + 2) == hi - 1) {
-                    smallHeap[i * 2 + 1] = smallHeap[i * 2 + 2];
-                    break;
-                }
-                i = i * 2 + 1;
-            } else {
-                smallHeap[i] = smallHeap[i * 2 + 2];
-                i = i * 2 + 2;
-            }
+    int poll() {
+        int top = smallHeap[0].val();
+        if(smallHeap[0].plusAndHasNext()) {
+            adjustTop();
+        } else {
+            upLeaf();
         }
-        hi--;
-        return head;
+        return top;
+    }
+
+    private void upLeaf() {
+        int l = 1, r = 2;
+    }
+
+    private void adjustTop() {
+
     }
 
     public static void main(String[] args) {
-        int[][] matrix = {{1, 5, 9}, {10, 11, 13}, {12, 13, 15}};
-        System.out.println(new P378().kthSmallest(matrix, 8));
+        int[][] matrix = {{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}};
+        System.out.println(new P378().kthSmallest(matrix, 5));
     }
 }
