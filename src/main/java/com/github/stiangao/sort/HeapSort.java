@@ -8,25 +8,26 @@ import java.util.Arrays;
 public class HeapSort {
     public static void main(String[] args) {
         int[] arr = {9, 5, 4, 17, 42, 7, 1, 90, 65, 54};
-        for (int i = 0; i < arr.length; i++) {
-            heapSort(arr, i);
+        for (int i = 0; i < arr.length - 1; i++) {
+            heapSort(arr, i, 0);
+            System.out.println(Arrays.toString(arr));
         }
-        System.out.println(Arrays.toString(arr));
+
     }
 
-    private static void heapSort(int[] arr, int i) {
+    private static void heapSort(int[] arr, int i, int k) {
         if (i >= arr.length) {
             return;
         }
-        int l = i * 2 + 1, r = l + 1;
-        if (l < arr.length && arr[i] > arr[l]) {
-            swap(arr, i, l);
+        int l = i + k * 2 + 1, r = l + 1;
+        if (l < arr.length) {
+            heapSort(arr, l, k + 1);
+            if (arr[i] > arr[l]) swap(arr, i, l);
         }
-        if (r < arr.length && arr[i] > arr[r]) {
-            swap(arr, i, r);
+        if (r < arr.length) {
+            heapSort(arr, r, k + 1);
+            if (arr[i] > arr[r]) swap(arr, i, r);
         }
-        heapSort(arr, l);
-        heapSort(arr, r);
     }
 
     private static void swap(int[] arr, int a, int b) {

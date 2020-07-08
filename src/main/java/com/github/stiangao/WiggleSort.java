@@ -8,6 +8,7 @@ public class WiggleSort {
         if (nums.length < 2) {
             return;
         }
+
         Arrays.sort(nums);
         int[] arr = new int[nums.length];
         int mid = nums.length / 2 - 1;
