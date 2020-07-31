@@ -8,7 +8,7 @@ public class BigNumAdd2 {
         System.out.println(numAdd2.add("19274123801265218309127458210.92731237", "12132983928744124.55555555552731237"));
     }
 
-    //以小数据为中心构造长度相等的 char[] 数组后再计算，一次 for 循环中搞定
+    // 以小数点为中心构造长度相等的 char[] 数组后再计算，一次 for 循环搞定
     public String add(String a, String b) {
         int iA = a.indexOf("."), iB = b.indexOf(".");
         int lenA = a.length(), lenB = b.length();
